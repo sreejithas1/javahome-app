@@ -1,20 +1,14 @@
 FROM ubuntu:16.04
-
-LABEL company="Java Home Cloud" \
-      maintainer="Hari" \
-      Location="Banglore" \
-      Version="0.0.1"
-
-RUN apt-get update -y
-# httpd is the package name for apache in Linux
-# apache2 is the package name for apache in Ubuntu
+LABEL company="JAVA HOME CLOUD" \
+        project="JOB ASSIST"\
+        author="SREEJITH"\
+        version="1.0.2"
+RUN apt update -y
 RUN apt-get install apache2 -y
-
-# Copy the static website to Apache deployment directory(/var/www/html)
-WORKDIR /var/www/html
-
-ADD demo-app .
-
+RUN apt-get install git -y
+WORKDIR /code
+RUN git clone https://github.com/sreejithas1/javahome-app
+RUN rm -rf javahome-app/*.git
+RUN cp -r javahome-app/* /var/www/html
 EXPOSE 80
-# CMD is runtime instruction, is excuted when we run container
-ENTRYPOINT ["apachectl","-D", "FOREGROUND"]
+ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
